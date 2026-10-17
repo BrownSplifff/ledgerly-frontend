@@ -20,7 +20,7 @@ React, TypeScript, Vite, Tailwind CSS, React Router, Shadcn-style UI primitives,
 
 ## Current data behavior
 
-Invoice records are stored in this browser's local storage. Clearing browser storage removes them, and they do not sync between devices. The app contains no seeded invoice records or simulated authentication, extraction, or pairing. Uploaded documents remain in the browser session and are not uploaded to a server.
+Invoice records are stored in this browser's local storage. Clearing browser storage removes them, and they do not sync between devices. The app contains no seeded invoice records or simulated extraction or pairing. Sign-in uses a fixed local-only test account (`account@ledgerly.local` / `Ledgerly123!`) and is not secure authentication. Uploaded documents remain in the browser session and are not uploaded to a server.
 
 This frontend is not ready for production financial data: authentication, server-side storage, desktop-agent pairing, document extraction, and deployment security still need implementation and review.
 
