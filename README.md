@@ -1,32 +1,45 @@
-# React + TypeScript + Vite
+# Ledgerly invoice automation UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React 18, TypeScript, Vite, React Router DOM, Tailwind CSS, Radix-backed Shadcn-style UI primitives, and Tremor data components.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The production build is `npm run build`; preview it with `npm run preview`.
+
+## Routes and test flow
+
+- `/login` - first page; sign in or switch to the demo account-creation form.
+- `/landing` - product landing page shown after demo sign-in.
+- `/capture` - landing page call to action opens invoice upload and review.
+- `/pairing` - enter a short code and view simulated workstation connection states.
+- `/dashboard` - view invoice KPIs and Tremor table, run the fixed-menu query preview, and export CSV.
+
+## Project structure
+
+```text
+src/
+  components/ui.tsx       Radix-backed buttons, inputs, cards, dialogs, and toast provider
+  context/InvoiceContext.tsx
+  lib/utils.ts            Tailwind class helper
+  pages/
+    auth/LoginPage.tsx
+    marketing/LandingPage.tsx
+    workspace/PairingPage.tsx
+    workspace/CapturePage.tsx
+    workspace/DashboardPage.tsx
+  types.ts                Invoice and extraction confidence types plus demo data
+  App.tsx                 Shared workspace layout and route definitions
+  main.tsx                Providers and application entry point
+  index.css               Tailwind and Shadcn CSS variables
+tailwind.config.cjs       Tailwind and Tremor theme
+postcss.config.cjs
+```
+
+## Prototype boundaries
+
+This is a frontend-only MVP preview. Pairing accepts any six-character code and does not perform an agent handshake. The capture page demonstrates review using sample extraction data; it does not run OCR or save the original file. Confirmed invoice records are stored in browser local storage rather than a PC agent or SQLite database. Chat suggestions use deterministic local handlers; overdue and cash-paid answers require due-date and settlement fields that are not in the invoice schema.
