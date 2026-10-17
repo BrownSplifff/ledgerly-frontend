@@ -1,45 +1,29 @@
-# Ledgerly invoice automation UI
+# Ledgerly frontend
 
-React 18, TypeScript, Vite, React Router DOM, Tailwind CSS, Radix-backed Shadcn-style UI primitives, and Tremor data components.
+React, TypeScript, Vite, Tailwind CSS, React Router, Shadcn-style UI primitives, and Tremor components for an invoice capture and review interface.
 
 ## Run locally
 
-```sh
-npm install
-npm run dev
-```
+- `npm install`
+- `npm run dev`
+- `npm run lint`
+- `npm run build`
+- `npm run preview`
 
-The production build is `npm run build`; preview it with `npm run preview`.
+## Routes
 
-## Routes and test flow
+- `/login` — sign-in and account creation UI. Authentication is not connected.
+- `/landing` — product overview and links into invoice workflows.
+- `/pairing` — workstation pairing UI. The desktop agent and pairing service are not connected.
+- `/capture` — attach a PDF or image, manually enter invoice data, review totals, and save the record. OCR/extraction is not connected.
+- `/dashboard` — search and filter saved invoices, view metrics, use supported read-only queries, and export CSV.
 
-- `/login` - first page; sign in or switch to the demo account-creation form.
-- `/landing` - product landing page shown after demo sign-in.
-- `/capture` - landing page call to action opens invoice upload and review.
-- `/pairing` - enter a short code and view simulated workstation connection states.
-- `/dashboard` - view invoice KPIs and Tremor table, run the fixed-menu query preview, and export CSV.
+## Current data behavior
 
-## Project structure
+Invoice records are stored in this browser's local storage. Clearing browser storage removes them, and they do not sync between devices. The app contains no seeded invoice records or simulated authentication, extraction, or pairing. Uploaded documents remain in the browser session and are not uploaded to a server.
 
-```text
-src/
-  components/ui.tsx       Radix-backed buttons, inputs, cards, dialogs, and toast provider
-  context/InvoiceContext.tsx
-  lib/utils.ts            Tailwind class helper
-  pages/
-    auth/LoginPage.tsx
-    marketing/LandingPage.tsx
-    workspace/PairingPage.tsx
-    workspace/CapturePage.tsx
-    workspace/DashboardPage.tsx
-  types.ts                Invoice and extraction confidence types plus demo data
-  App.tsx                 Shared workspace layout and route definitions
-  main.tsx                Providers and application entry point
-  index.css               Tailwind and Shadcn CSS variables
-tailwind.config.cjs       Tailwind and Tremor theme
-postcss.config.cjs
-```
+This frontend is not ready for production financial data: authentication, server-side storage, desktop-agent pairing, document extraction, and deployment security still need implementation and review.
 
-## Prototype boundaries
+## API boundary
 
-This is a frontend-only MVP preview. Pairing accepts any six-character code and does not perform an agent handshake. The capture page demonstrates review using sample extraction data; it does not run OCR or save the original file. Confirmed invoice records are stored in browser local storage rather than a PC agent or SQLite database. Chat suggestions use deterministic local handlers; overdue and cash-paid answers require due-date and settlement fields that are not in the invoice schema.
+`src/api/client.ts` contains the frontend service functions. Replace the unavailable authentication, pairing, and extraction operations with calls to the backend when it is ready. Invoice persistence currently uses browser storage.

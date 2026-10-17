@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Invoice, InvoiceDraft } from '../types'
-import { mockGetInvoices, mockStoreInvoices } from '../api/mockApi'
+import { getInvoices, saveInvoices } from '../api/client'
 import { InvoiceContext } from './invoice-context'
 
 export function InvoiceProvider({ children }: { children: ReactNode }) {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loaded, setLoaded] = useState(false)
 
-  useEffect(() => { let active = true; void mockGetInvoices().then((records) => { if (active) { setInvoices(records); setLoaded(true) } }); return () => { active = false } }, [])
-  useEffect(() => { if (loaded) void mockStoreInvoices(invoices) }, [invoices, loaded])
+  useEffect(() => { let active = true; void getInvoices().then((records) => { if (active) { setInvoices(records); setLoaded(true) } }); return () => { active = false } }, [])
+  useEffect(() => { if (loaded) void saveInvoices(invoices) }, [invoices, loaded])
 
   const saveInvoice = useCallback((draft: InvoiceDraft) => {
     const normalize = (value: string) => value.trim().toLowerCase().replace(/[^a-z0-9]/g, '')
